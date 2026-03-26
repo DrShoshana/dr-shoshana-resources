@@ -1,0 +1,8 @@
+{
+  "name": "dr-shoshana-resources",
+  "version": "1.0.0",
+  "description": "Dr. Shoshana's live-syncing therapy resources page",
+  "dependencies": {
+    "@notionhq/client": "^2.2.15"
+  }
+}

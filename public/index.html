@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. Shoshana's Therapy Resource Library</title>
+  <style>
+    :root {
+      --primary: #5b6fa6;
+      --primary-light: #e8ecf7;
+      --accent: #e07b54;
+      --text: #2d2d2d;
+      --text-muted: #666;
+      --bg: #f7f8fc;
+      --card-bg: #ffffff;
+      --border: #dde2f0;
+      --radius: 10px;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 18px 24px 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    header .logo {
+      font-size: 28px;
+      line-height: 1;
+    }
+    header .header-text h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    header .header-text p {
+      font-size: 0.78rem;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    /* ── CONTROLS ── */
+    .controls {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .controls input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .controls input[type="text"]:focus {
+      border-color: var(--primary);
+    }
+    .controls select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      background: white;
+      cursor: pointer;
+      outline: none;
+    }
+    .controls select:focus {
+      border-color: var(--primary);
+    }
+    .controls .count-badge {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    /* ── CATEGORY TABS ── */
+    .category-tabs {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .category-tabs button {
+      padding: 10px 16px;
+      border: none;
+      background: none;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .category-tabs button:hover {
+      color: var(--primary);
+    }
+    .category-tabs button.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      padding: 20px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── TOOL GRID ── */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── TOOL CARD ── */
+    .tool-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .tool-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+    .tool-card .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .tool-card .tool-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .tool-card .type-badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-weight: 500;
+    }
+    .tool-card .description {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .tool-card .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 4px;
+    }
+    .tool-card .meta-tag {
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 20px;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .tool-card .card-footer {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .tool-card .download-btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .tool-card .download-btn:hover {
+      background: #4a5d94;
+    }
+    .tool-card .no-link {
+      font-size: 0.78rem;
+      color: #aaa;
+      font-style: italic;
+    }
+
+    /* ── TYPE BADGE COLORS ── */
+    .badge-guide       { background: #fde8e8; color: #c0392b; }
+    .badge-worksheet   { background: #fef3cd; color: #856404; }
+    .badge-visual      { background: #e8f5e9; color: #2e7d32; }
+    .badge-game        { background: #e3f2fd; color: #1565c0; }
+    .badge-exercise    { background: #f3e5f5; color: #6a1b9a; }
+    .badge-homework    { background: #fff3e0; color: #e65100; }
+    .badge-bundle      { background: #e0f7fa; color: #006064; }
+    .badge-other       { background: #f5f5f5; color: #555; }
+
+    /* ── LOADING / EMPTY STATES ── */
+    .state-container {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+    .state-container .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .state-container h2 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .state-container p {
+      font-size: 0.88rem;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+      color: #aaa;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      header { padding: 14px 16px; }
+      .controls { padding: 10px 16px; }
+      .category-tabs { padding: 0 16px; }
+      main { padding: 16px; }
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">🧰</div>
+    <div class="header-text">
+      <h1>Dr. Shoshana's Therapy Resource Library</h1>
+      <p>Handouts, worksheets, games &amp; more — updated automatically from Notion</p>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search by name, description, or keyword…" />
+    <select id="audienceFilter">
+      <option value="">All Audiences</option>
+      <option value="Child">Child</option>
+      <option value="Preteen">Preteen</option>
+      <option value="Teen">Teen</option>
+      <option value="Young Adult">Young Adult</option>
+      <option value="Adult">Adult</option>
+      <option value="Parent">Parent</option>
+      <option value="Family">Family</option>
+      <option value="All Ages">All Ages</option>
+    </select>
+    <select id="typeFilter">
+      <option value="">All Types</option>
+      <option value="Multi-Page Guide">Multi-Page Guide</option>
+      <option value="Quick Reference">Quick Reference</option>
+      <option value="Worksheet">Worksheet</option>
+      <option value="Visual Aid">Visual Aid</option>
+      <option value="Therapy Game">Therapy Game</option>
+      <option value="In Session Exercise">In Session Exercise</option>
+      <option value="Child Homework">Child Homework</option>
+      <option value="Adult Homework">Adult Homework</option>
+      <option value="Skill Builder">Skill Builder</option>
+      <option value="Art Activity">Art Activity</option>
+      <option value="Bundle">Bundle</option>
+    </select>
+    <span class="count-badge" id="countBadge"></span>
+  </div>
+
+  <div class="category-tabs" id="categoryTabs">
+    <button class="active" data-bucket="">All Categories</button>
+    <button data-bucket="Emotional Regulation">Emotional Regulation</button>
+    <button data-bucket="Wellness &amp; Self-Care">Wellness &amp; Self-Care</button>
+    <button data-bucket="Anxiety Management">Anxiety Management</button>
+    <button data-bucket="Cognitive Flexibility">Cognitive Flexibility</button>
+    <button data-bucket="Social Development">Social Development</button>
+    <button data-bucket="School &amp; Executive Functioning">School &amp; Executive Functioning</button>
+    <button data-bucket="Family Communication &amp; Relationships">Family Communication &amp; Relationships</button>
+    <button data-bucket="Self &amp; Identity">Self &amp; Identity</button>
+    <button data-bucket="Life Stress &amp; Transitions">Life Stress &amp; Transitions</button>
+  </div>
+
+  <main>
+    <div id="toolContainer">
+      <div class="state-container">
+        <div class="spinner"></div>
+        <h2>Loading resources…</h2>
+        <p>Fetching the latest tools from the library.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Dr. Shoshana Taubman, PsyD &nbsp;|&nbsp; Therapy Resource Library &nbsp;|&nbsp; Auto-synced from Notion
+  </footer>
+
+  <script>
+    let allTools = [];
+    let activeFilters = { bucket: "", search: "", audience: "", type: "" };
+
+    // ── Fetch tools from Netlify function ──
+    async function fetchTools() {
+      try {
+        const res = await fetch("/.netlify/functions/get-tools");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        allTools = data.tools || [];
+        renderTools();
+      } catch (err) {
+        document.getElementById("toolContainer").innerHTML = `
+          <div class="state-container">
+            <div class="icon">⚠️</div>
+            <h2>Could not load resources</h2>
+            <p>Please try refreshing the page. If the problem persists, the library may be temporarily unavailable.</p>
+          </div>`;
+      }
+    }
+
+    // ── Render filtered tools ──
+    function renderTools() {
+      const { bucket, search, audience, type } = activeFilters;
+      const q = search.toLowerCase();
+
+      const filtered = allTools.filter((t) => {
+        if (bucket && t.primaryBucket !== bucket && !t.secondaryBuckets.includes(bucket)) return false;
+        if (audience && !t.audience.includes(audience)) return false;
+        if (type && t.toolType !== type) return false;
+        if (q) {
+          const haystack = [t.toolName, t.toolNameFriendly, t.description, t.toolCode, ...(t.audience || [])].join(" ").toLowerCase();
+          if (!haystack.includes(q)) return false;
+        }
+        return true;
+      });
+
+      const count = filtered.length;
+      document.getElementById("countBadge").textContent =
+        count === 0 ? "No tools found" : `${count} tool${count !== 1 ? "s" : ""}`;
+
+      if (count === 0) {
+        document.getElementById("toolContainer").innerHTML = `
+          <div class="state-container">
+            <div class="icon">🔍</div>
+            <h2>No tools match your filters</h2>
+            <p>Try adjusting your search or clearing a filter.</p>
+          </div>`;
+        return;
+      }
+
+      const html = `<div class="tool-grid">${filtered.map(renderCard).join("")}</div>`;
+      document.getElementById("toolContainer").innerHTML = html;
+    }
+
+    // ── Render a single card ──
+    function renderCard(tool) {
+      const displayName = tool.toolNameFriendly || tool.toolName || "Untitled Tool";
+      const badgeClass = getBadgeClass(tool.toolType);
+      const audienceTags = (tool.audience || []).map((a) => `<span class="meta-tag">${a}</span>`).join("");
+      const bucketTag = tool.primaryBucket ? `<span class="meta-tag" style="background:#f0e8ff;color:#5b21b6;">${tool.primaryBucket}</span>` : "";
+
+      const footerHtml = tool.googleDriveUrl
+        ? `<a class="download-btn" href="${tool.googleDriveUrl}" target="_blank" rel="noopener">📄 View / Download</a>`
+        : `<span class="no-link">No download link yet</span>`;
+
+      return `
+        <div class="tool-card">
+          <div class="card-header">
+            <span class="tool-name">${escHtml(displayName)}</span>
+            ${tool.toolType ? `<span class="type-badge ${badgeClass}">${escHtml(tool.toolType)}</span>` : ""}
+          </div>
+          ${tool.description ? `<p class="description">${escHtml(tool.description)}</p>` : ""}
+          <div class="meta">
+            ${bucketTag}
+            ${audienceTags}
+          </div>
+          <div class="card-footer">${footerHtml}</div>
+        </div>`;
+    }
+
+    function getBadgeClass(type) {
+      const map = {
+        "Multi-Page Guide": "badge-guide",
+        "Quick Reference": "badge-guide",
+        "Worksheet": "badge-worksheet",
+        "Visual Aid": "badge-visual",
+        "Therapy Game": "badge-game",
+        "In Session Exercise": "badge-exercise",
+        "Child Homework": "badge-homework",
+        "Adult Homework": "badge-homework",
+        "Skill Builder": "badge-other",
+        "Art Activity": "badge-exercise",
+        "Bundle": "badge-bundle",
+      };
+      return map[type] || "badge-other";
+    }
+
+    function escHtml(str) {
+      if (!str) return "";
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    // ── Event listeners ──
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      activeFilters.search = e.target.value;
+      renderTools();
+    });
+
+    document.getElementById("audienceFilter").addEventListener("change", (e) => {
+      activeFilters.audience = e.target.value;
+      renderTools();
+    });
+
+    document.getElementById("typeFilter").addEventListener("change", (e) => {
+      activeFilters.type = e.target.value;
+      renderTools();
+    });
+
+    document.getElementById("categoryTabs").addEventListener("click", (e) => {
+      if (e.target.tagName !== "BUTTON") return;
+      document.querySelectorAll(".category-tabs button").forEach((b) => b.classList.remove("active"));
+      e.target.classList.add("active");
+      activeFilters.bucket = e.target.dataset.bucket;
+      renderTools();
+    });
+
+    // ── Init ──
+    fetchTools();
+  </script>
+</body>
+</html>
