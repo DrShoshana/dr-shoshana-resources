@@ -40,6 +40,9 @@
       font-size: 28px;
       line-height: 1;
     }
+    header .header-text {
+      flex: 1;
+    }
     header .header-text h1 {
       font-size: 1.25rem;
       font-weight: 700;
@@ -49,6 +52,27 @@
       font-size: 0.78rem;
       opacity: 0.85;
       margin-top: 2px;
+    }
+    /* Help button in header */
+    .help-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+      line-height: 1;
+    }
+    .help-btn:hover {
+      background: rgba(255,255,255,0.35);
     }
 
     /* ── CONTROLS ── */
@@ -165,14 +189,49 @@
       color: var(--text);
       line-height: 1.3;
     }
+    /* ── TYPE BADGE WITH TOOLTIP ── */
+    .badge-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
     .tool-card .type-badge {
       font-size: 0.7rem;
       padding: 3px 8px;
       border-radius: 20px;
       white-space: nowrap;
-      flex-shrink: 0;
       font-weight: 500;
+      cursor: default;
+      display: block;
     }
+    /* Tooltip */
+    .badge-tooltip {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      width: 220px;
+      background: #2d2d2d;
+      color: #fff;
+      font-size: 0.75rem;
+      line-height: 1.45;
+      padding: 9px 11px;
+      border-radius: 7px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+      z-index: 100;
+      pointer-events: none;
+    }
+    .badge-tooltip::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      right: 14px;
+      border: 6px solid transparent;
+      border-bottom-color: #2d2d2d;
+    }
+    .badge-wrapper:hover .badge-tooltip {
+      display: block;
+    }
+
     .tool-card .description {
       font-size: 0.82rem;
       color: var(--text-muted);
@@ -224,6 +283,7 @@
     .badge-exercise    { background: #f3e5f5; color: #6a1b9a; }
     .badge-homework    { background: #fff3e0; color: #e65100; }
     .badge-bundle      { background: #e0f7fa; color: #006064; }
+    .badge-skillbuilder { background: #fce4ec; color: #880e4f; }
     .badge-other       { background: #f5f5f5; color: #555; }
 
     /* ── LOADING / EMPTY STATES ── */
@@ -255,6 +315,98 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── HELP MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal {
+      background: white;
+      border-radius: 14px;
+      max-width: 560px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+      animation: modalIn 0.18s ease;
+    }
+    @keyframes modalIn {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .modal-header {
+      background: var(--primary);
+      color: white;
+      padding: 18px 22px 14px;
+      border-radius: 14px 14px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-header h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .modal-header p {
+      font-size: 0.78rem;
+      opacity: 0.85;
+      margin-top: 3px;
+    }
+    .modal-close {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .modal-close:hover {
+      background: rgba(255,255,255,0.35);
+    }
+    .modal-body {
+      padding: 20px 22px 24px;
+    }
+    .type-entry {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .type-entry:last-child {
+      border-bottom: none;
+    }
+    .type-entry-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .type-entry .type-badge {
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .type-entry p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
     /* ── FOOTER ── */
     footer {
       text-align: center;
@@ -283,6 +435,7 @@
       <h1>Dr. Shoshana's Therapy Resource Library</h1>
       <p>Handouts, worksheets, games &amp; more — updated automatically from Notion</p>
     </div>
+    <button class="help-btn" id="helpBtn" title="What are the different tool types?">?</button>
   </header>
 
   <div class="controls">
@@ -342,7 +495,59 @@
     Dr. Shoshana Taubman, PsyD &nbsp;|&nbsp; Therapy Resource Library &nbsp;|&nbsp; Auto-synced from Notion
   </footer>
 
+  <!-- ── HELP MODAL ── -->
+  <div class="modal-overlay" id="helpModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalTitle">Understanding Tool Types</h2>
+          <p>What each type of resource is and how to use it</p>
+        </div>
+        <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
   <script>
+    // ── Tool type definitions (all 6 public-facing types) ──
+    const TYPE_DEFINITIONS = {
+      "Multi-Page Guide": {
+        badgeClass: "badge-guide",
+        description: "A deeper dive into a topic — typically 3 to 5 pages. Multi-Page Guides explain what something is, why it happens, and what you can do about it. Great for building real understanding, not just awareness."
+      },
+      "Quick Reference": {
+        badgeClass: "badge-guide",
+        description: "A single-page summary you can keep handy. Quick References give you the key facts, signs to watch for, and a few important takeaways — all at a glance. Perfect for a refrigerator, a folder, or a quick review before a tough conversation."
+      },
+      "Skill Builder": {
+        badgeClass: "badge-skillbuilder",
+        description: "A step-by-step guide for putting a skill into practice. Skill Builders walk you through how to actually do something — not just what it is. Think of it as a how-to guide you can return to again and again as you practice."
+      },
+      "Visual Aid": {
+        badgeClass: "badge-visual",
+        description: "A chart, diagram, or illustrated reference that makes a concept easier to see and understand. Visual Aids are especially helpful for visual learners or for explaining something to a child in a simple, concrete way."
+      },
+      "Worksheet": {
+        badgeClass: "badge-worksheet",
+        description: "A structured writing tool designed to be completed during or after a therapy session. Worksheets guide you through a specific exercise — like identifying a thought pattern, tracking a feeling, or making a plan — with prompts and space to write. Your therapist will let you know when and how to use these."
+      },
+      "Bundle": {
+        badgeClass: "badge-bundle",
+        description: "A curated collection of tools on a single topic, packaged together for convenience. Bundles typically include a Quick Reference or Guide, a Skill Builder, and a Worksheet — everything you need to understand a topic, build the skill, and put it into practice. Your therapist will share a bundle when they want you to have the full picture on something you're working on together."
+      },
+      // In-session types (no public description — won't appear in modal)
+      "Therapy Game":        { badgeClass: "badge-game",      description: null },
+      "In Session Exercise": { badgeClass: "badge-exercise",  description: null },
+      "Child Homework":      { badgeClass: "badge-homework",  description: null },
+      "Adult Homework":      { badgeClass: "badge-homework",  description: null },
+      "Art Activity":        { badgeClass: "badge-exercise",  description: null },
+      "PowerPoint":          { badgeClass: "badge-other",     description: null },
+      "Other":               { badgeClass: "badge-other",     description: null },
+    };
+
     let allTools = [];
     let activeFilters = { bucket: "", search: "", audience: "", type: "" };
 
@@ -354,6 +559,7 @@
         const data = await res.json();
         allTools = data.tools || [];
         renderTools();
+        buildHelpModal();
       } catch (err) {
         document.getElementById("toolContainer").innerHTML = `
           <div class="state-container">
@@ -362,6 +568,30 @@
             <p>Please try refreshing the page. If the problem persists, the library may be temporarily unavailable.</p>
           </div>`;
       }
+    }
+
+    // ── Build help modal content — only types present in the library with public descriptions ──
+    function buildHelpModal() {
+      const presentTypes = [...new Set(allTools.map(t => t.toolType).filter(Boolean))];
+      // Only include types that have a public description and are actually in the library
+      const toShow = Object.entries(TYPE_DEFINITIONS)
+        .filter(([type, def]) => def.description && presentTypes.includes(type));
+
+      if (toShow.length === 0) {
+        document.getElementById("modalBody").innerHTML = "<p style='color:#888;font-size:0.85rem;'>No tool type descriptions available.</p>";
+        return;
+      }
+
+      const html = toShow.map(([type, def]) => `
+        <div class="type-entry">
+          <div class="type-entry-header">
+            <span class="type-badge ${def.badgeClass}">${escHtml(type)}</span>
+          </div>
+          <p>${escHtml(def.description)}</p>
+        </div>
+      `).join("");
+
+      document.getElementById("modalBody").innerHTML = html;
     }
 
     // ── Render filtered tools ──
@@ -401,9 +631,15 @@
     // ── Render a single card ──
     function renderCard(tool) {
       const displayName = tool.toolNameFriendly || tool.toolName || "Untitled Tool";
-      const badgeClass = getBadgeClass(tool.toolType);
-      const audienceTags = (tool.audience || []).map((a) => `<span class="meta-tag">${a}</span>`).join("");
-      const bucketTag = tool.primaryBucket ? `<span class="meta-tag" style="background:#f0e8ff;color:#5b21b6;">${tool.primaryBucket}</span>` : "";
+      const typeDef = TYPE_DEFINITIONS[tool.toolType] || { badgeClass: "badge-other", description: null };
+      const audienceTags = (tool.audience || []).map((a) => `<span class="meta-tag">${escHtml(a)}</span>`).join("");
+      const bucketTag = tool.primaryBucket ? `<span class="meta-tag" style="background:#f0e8ff;color:#5b21b6;">${escHtml(tool.primaryBucket)}</span>` : "";
+
+      const badgeHtml = tool.toolType ? `
+        <div class="badge-wrapper">
+          <span class="type-badge ${typeDef.badgeClass}">${escHtml(tool.toolType)}</span>
+          ${typeDef.description ? `<div class="badge-tooltip">${escHtml(typeDef.description)}</div>` : ""}
+        </div>` : "";
 
       const footerHtml = tool.googleDriveUrl
         ? `<a class="download-btn" href="${tool.googleDriveUrl}" target="_blank" rel="noopener">📄 View / Download</a>`
@@ -413,7 +649,7 @@
         <div class="tool-card">
           <div class="card-header">
             <span class="tool-name">${escHtml(displayName)}</span>
-            ${tool.toolType ? `<span class="type-badge ${badgeClass}">${escHtml(tool.toolType)}</span>` : ""}
+            ${badgeHtml}
           </div>
           ${tool.description ? `<p class="description">${escHtml(tool.description)}</p>` : ""}
           <div class="meta">
@@ -424,44 +660,40 @@
         </div>`;
     }
 
-    function getBadgeClass(type) {
-      const map = {
-        "Multi-Page Guide": "badge-guide",
-        "Quick Reference": "badge-guide",
-        "Worksheet": "badge-worksheet",
-        "Visual Aid": "badge-visual",
-        "Therapy Game": "badge-game",
-        "In Session Exercise": "badge-exercise",
-        "Child Homework": "badge-homework",
-        "Adult Homework": "badge-homework",
-        "Skill Builder": "badge-other",
-        "Art Activity": "badge-exercise",
-        "Bundle": "badge-bundle",
-      };
-      return map[type] || "badge-other";
-    }
-
     function escHtml(str) {
       if (!str) return "";
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
-    // ── Event listeners ──
+    // ── Help modal open/close ──
+    document.getElementById("helpBtn").addEventListener("click", () => {
+      document.getElementById("helpModal").classList.add("open");
+    });
+    document.getElementById("modalClose").addEventListener("click", () => {
+      document.getElementById("helpModal").classList.remove("open");
+    });
+    document.getElementById("helpModal").addEventListener("click", (e) => {
+      if (e.target === document.getElementById("helpModal")) {
+        document.getElementById("helpModal").classList.remove("open");
+      }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") document.getElementById("helpModal").classList.remove("open");
+    });
+
+    // ── Filter event listeners ──
     document.getElementById("searchInput").addEventListener("input", (e) => {
       activeFilters.search = e.target.value;
       renderTools();
     });
-
     document.getElementById("audienceFilter").addEventListener("change", (e) => {
       activeFilters.audience = e.target.value;
       renderTools();
     });
-
     document.getElementById("typeFilter").addEventListener("change", (e) => {
       activeFilters.type = e.target.value;
       renderTools();
     });
-
     document.getElementById("categoryTabs").addEventListener("click", (e) => {
       if (e.target.tagName !== "BUTTON") return;
       document.querySelectorAll(".category-tabs button").forEach((b) => b.classList.remove("active"));
