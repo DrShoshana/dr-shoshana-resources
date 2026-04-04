@@ -633,7 +633,8 @@
       const displayName = tool.toolNameFriendly || tool.toolName || "Untitled Tool";
       const typeDef = TYPE_DEFINITIONS[tool.toolType] || { badgeClass: "badge-other", description: null };
       const audienceTags = (tool.audience || []).map((a) => `<span class="meta-tag">${escHtml(a)}</span>`).join("");
-      const bucketTag = tool.primaryBucket ? `<span class="meta-tag" style="background:#f0e8ff;color:#5b21b6;">${escHtml(tool.primaryBucket)}</span>` : "";
+      const allBuckets = [tool.primaryBucket, ...(tool.secondaryBuckets || [])].filter(Boolean);
+      const bucketTags = allBuckets.map(b => `<span class="meta-tag" style="background:#f0e8ff;color:#5b21b6;">${escHtml(b)}</span>`).join("");
 
       const badgeHtml = tool.toolType ? `
         <div class="badge-wrapper">
@@ -653,7 +654,7 @@
           </div>
           ${tool.description ? `<p class="description">${escHtml(tool.description)}</p>` : ""}
           <div class="meta">
-            ${bucketTag}
+            ${bucketTags}
             ${audienceTags}
           </div>
           <div class="card-footer">${footerHtml}</div>
